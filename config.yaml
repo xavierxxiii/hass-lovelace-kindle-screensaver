@@ -1,6 +1,6 @@
-name: Lovelace Kindle Screensaver
+name: Lovelace Kindle Screensaver XavierXXIII
 version: 1.2.1
-slug: kindle-screensaver
+slug: kindle-screensaver-xavierxxiii
 description: This tool can be used to display a Lovelace view of your Home Assistant instance on a jailbroken Kindle device. It regularly takes a screenshot which can be polled and used as a screensaver image of the online screensaver plugin.
 startup: application
 boot: auto
@@ -9,7 +9,6 @@ arch:
   - amd64
   - armv7
 url: 'https://github.com/xavierxxiii/hass-lovelace-kindle-screensaver'
-image: 'sibbl/hass-lovelace-kindle-screensaver-ha-addon-{arch}'
 webui: 'http://[HOST]:[PORT:5000]'
 ingress: true
 ingress_port: 5000
