@@ -1,4 +1,4 @@
-# Home Assistant Lovelace Kindle Screensaver
+# Home Assistant Lovelace Kindle Screensaver XavierXXIII
 
 ![ci](https://github.com/sibbl/hass-lovelace-kindle-screensaver/workflows/ci/badge.svg)
 
