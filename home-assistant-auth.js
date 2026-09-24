@@ -20,11 +20,7 @@ async function createAuthenticatedContext(
   let authenticationFailed = false;
 
   try {
-    logger.log(`Visiting '${pageConfig.baseUrl}' to login...`);
     page = await browserContext.newPage();
-    await page.goto(pageConfig.baseUrl, {
-      timeout: renderingTimeout
-    });
 
     const hassTokens = {
       hassUrl: pageConfig.baseUrl,
@@ -32,8 +28,8 @@ async function createAuthenticatedContext(
       token_type: "Bearer"
     };
 
-    logger.log("Adding authentication entry to browser's local storage...");
-    await page.evaluate(
+    logger.log("Priming browser's local storage with authentication entry...");
+    await page.evaluateOnNewDocument(
       (tokens, selectedLanguage, selectedTheme) => {
         localStorage.setItem("hassTokens", tokens);
         localStorage.setItem("selectedLanguage", selectedLanguage);
@@ -46,6 +42,11 @@ async function createAuthenticatedContext(
       pageConfig.theme ? JSON.stringify(pageConfig.theme) : null
     );
 
+    logger.log(`Visiting '${pageConfig.baseUrl}' to establish session...`);
+    await page.goto(pageConfig.baseUrl, {
+      timeout: renderingTimeout
+    });
+    
     return browserContext;
   } catch (err) {
     authenticationFailed = true;
