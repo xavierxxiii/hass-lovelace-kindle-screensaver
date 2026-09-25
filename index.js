@@ -727,17 +727,15 @@ async function renderUrlToImageAsync(browser, pageConfig, url, path) {
       config.renderingTimeout,
       `set viewport for ${url}`
     );
-    const startTime = new Date().valueOf();
     console.log(`Navigating to ${url}...`);
     await page.goto(url, {
       waitUntil: ["domcontentloaded", "load", "networkidle0"],
       timeout: config.renderingTimeout
     });
 
-    const navigateTimespan = new Date().valueOf() - startTime;
     console.log(`Waiting for home-assistant root on ${url}...`);
     await page.waitForSelector("home-assistant", {
-      timeout: Math.max(config.renderingTimeout - navigateTimespan, 1000)
+      timeout: config.renderingTimeout
     });
 
     await withTimeout(
@@ -829,13 +827,13 @@ function getRenderJobTimeout() {
   const pageTimeoutBudget = config.pages.reduce((total, pageConfig) => {
     return (
       total +
-      config.renderingTimeout +
+      config.renderingTimeout * 2 +      // goto() and waitForSelector() now each get a full budget
       getNumber(pageConfig.renderingDelay, 0) +
       30000
     );
   }, 0);
 
-  return Math.max(pageTimeoutBudget, config.renderingTimeout + 30000);
+  return Math.max(pageTimeoutBudget, config.renderingTimeout * 2 + 30000);
 }
 
 function getHealthcheckMaxAge(renderJobTimeout) {
